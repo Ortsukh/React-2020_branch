@@ -1,167 +1,37 @@
 import React, { Component } from "react";
 
-import AppHeader from "../app-header";
-import SearchPanel from "../search-panel";
-import TodoList from "../todo-list";
-import ItemStatusFilter from "../item-status-filter";
-import AddForm from "../add-form";
+import Header from "../header";
+import RandomPlanet from "../random-planet";
+import ItemList from "../item-list";
+import PersonDetails from "../person-details";
+import PlanetDetails from "../planet-details";
 
 import "./app.css";
 
-class App extends Component {
-  maxId = 100;
-
-  createTodo(label) {
-    return {
-      label,
-      important: false,
-      done: false,
-      hidden: false,
-      id: this.maxId++
-    };
-  }
-
+export default class App extends Component {
   state = {
-    todoData: [
-      this.createTodo("Drink Coffee"),
-      this.createTodo("Make Awesome App")
-    ]
+    selectedItem: null
   };
-  filterActive = () => {
-    this.setState(prevState => {
-      const nextState = prevState.todoData.map(item => {
-        if (item.hidden) {
-          item.hidden = false;
-        }
-        if (item.done) {
-          item.hidden = true;
-        }
-
-        return item;
-      });
-
-      return {
-        todoData: nextState
-      };
+  onSelectedItem = id => {
+    this.setState({
+      selectedItem: id
     });
   };
-  filterAll = () => {
-    this.setState(prevState => {
-      const nextState = prevState.todoData.map(item => {
-        if (item.hidden) {
-          item.hidden = false;
-        }
-        return item;
-      });
-      return {
-        todoData: nextState
-      };
-    });
-  };
-  filterDone = () => {
-    this.setState(prevState => {
-      const nextState = prevState.todoData.map(item => {
-        if (item.hidden) {
-          item.hidden = false;
-        }
-        if (!item.done) {
-          item.hidden = true;
-        }
-        return item;
-      });
-      return {
-        todoData: nextState
-      };
-    });
-  };
-  searh = e => {
-    const value = e.target.value;
-    this.setState(prevState => {
-      const nextState = prevState.todoData.map(item => {
-        const label = item.label.toLowerCase();
-        if (!label.includes(value)) {
-          item.hidden = true;
-        } else {
-          item.hidden = false;
-        }
-        return item;
-      });
-      return {
-        todoData: nextState
-      };
-    });
-  };
-  deleteItem = id => {
-    this.setState(prevState => {
-      return {
-        todoData: prevState.todoData.filter(item => item.id !== id)
-      };
-    });
-  };
-
-  toggleImportant = id => {
-    this.setState(prevState => {
-      const nextState = prevState.todoData.map(item => {
-        if (item.id === id) {
-          item.important = !item.important;
-        }
-        return item;
-      });
-      return {
-        todoData: nextState
-      };
-    });
-  };
-  toggleDone = id => {
-    this.setState(prevState => {
-      const nextState = prevState.todoData.map(item => {
-        if (item.id === id) {
-          item.done = !item.done;
-        }
-        return item;
-      });
-      return {
-        todoData: nextState
-      };
-    });
-  };
-
-  addTodo = label => {
-    this.setState(prevState => {
-      return {
-        todoData: prevState.todoData.concat(this.createTodo(label))
-      };
-    });
-  };
-
   render() {
-    const { todoData } = this.state;
-    const todo = todoData.filter(item => !item.done).length;
-    const done = todoData.length - todo;
-
     return (
-      <div className="todo-app">
-        <AppHeader toDo={todo} done={done} />
-        <div className="top-panel search-panel">
-          <SearchPanel onSearch={this.searh} />
-          <ItemStatusFilter
-            onfilterActive={this.filterActive}
-            onfilterAll={this.filterAll}
-            onfilterDone={this.filterDone}
-            todos={todoData}
-          />
-        </div>
+      <div>
+        <Header />
+        <RandomPlanet />
 
-        <TodoList
-          todos={todoData}
-          onDelete={this.deleteItem}
-          onToggle={this.toggleDone}
-          onImportant={this.toggleImportant}
-        />
-        <AddForm onAdded={this.addTodo} />
+        <div className="row mb2">
+          <div className="col-md-6">
+            <ItemList onSelectedItem={this.onSelectedItem} />
+          </div>
+          <div className="col-md-6">
+            <PlanetDetails selectedItem={this.state.selectedItem} />
+          </div>
+        </div>
       </div>
     );
   }
 }
-
-export default App;
