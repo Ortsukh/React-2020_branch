@@ -6,12 +6,27 @@ import "./item-list.css";
 export default class ItemList extends Component {
   swapiService = new SwapiService();
   state = {
-    items: []
+    items: [],
+    error: false
   };
-  componentDidMount() {
-    this.swapiService.getAllPlanet().then(data => {
-      this.setState({ items: data });
+
+  onError = () => {
+    this.setState({
+      error: true
     });
+  };
+  componentDidCatch() {
+    this.setState({
+      error: true
+    });
+  }
+  componentDidMount() {
+    this.swapiService
+      .getAllPlanet()
+      .then(data => {
+        this.setState({ items: data });
+      })
+      .catch(this.onError);
   }
 
   render() {
