@@ -1,5 +1,6 @@
 export default class SwapiService {
   _apiBase = "https://swapi.co/api";
+  _baseImageUrl = `https://starwars-visualguide.com/assets/img`;
 
   async getResource(url) {
     const res = await fetch(`${this._apiBase}${url}`);
@@ -10,25 +11,43 @@ export default class SwapiService {
     return await res.json();
   }
 
-  async getAllPeople() {
+  getPlanetImage = ({ id }) => {
+    return `${this._baseImageUrl}/planets/${id}.jpg`;
+  };
+
+  getPersonImage = ({ id }) => {
+    return `${this._baseImageUrl}/characters/${id}.jpg`;
+  };
+  getStarshipImage = ({ id }) => {
+    return `${this._baseImageUrl}/startships/${id}.jpg`;
+  };
+  getAllPeople = async () => {
     const res = await this.getResource(`/people/`);
     return res.results.map(this._transformPerson);
-  }
+  };
 
-  async getPerson(id) {
+  getPerson = async id => {
     const person = await this.getResource(`/people/${id}/`);
     return this._transformPerson(person);
-  }
-  async getAllPlanet() {
+  };
+  getAllPlanet = async () => {
     const res = await this.getResource(`/planets/`);
-
     return res.results.map(this._transformPlanet);
-  }
+  };
 
-  async getPlanet(id) {
+  getPlanet = async id => {
     const planet = await this.getResource(`/planets/${id}/`);
     return this._transformPlanet(planet);
-  }
+  };
+
+  getAllStarship = async () => {
+    const res = await this.getResource(`/starships/`);
+    return res.results.map(this._transformStarship);
+  };
+  getStarship = async id => {
+    const starship = await this.getResource(`/starships/${id}/`);
+    return this._transformStarship(starship);
+  };
 
   _extractId(item) {
     const idRegExp = /\/([0-9]*)\/$/;
@@ -52,6 +71,15 @@ export default class SwapiService {
       gender: person.gender,
       birthYear: person.birthYear,
       eyeColor: person.eyeColor
+    };
+  };
+  _transformStarship = starship => {
+    return {
+      id: this._extractId(starship),
+      name: starship.name,
+      model: starship.model,
+      length: starship.length,
+      speed: starship.max_atmosphering_speed
     };
   };
 }

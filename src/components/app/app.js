@@ -1,51 +1,38 @@
 import React, { Component } from "react";
 
 import Header from "../header";
-import RandomPlanet from "../random-planet";
-import ItemList from "../item-list";
-import PersonDetails from "../person-details";
-import PlanetDetails from "../planet-details";
-import SwapiService from "../../services/swapi-service";
+// import RandomPlanet from "../random-planet";
+
+import { PlanetList, PlanetDetails, RandomPlanets } from "../sw-components";
 import Row from "../row";
+import { SwapiServiceProvider } from "../../context";
+import SwapiService from "../../services/swapi-service";
 
 import "./app.css";
 
 export default class App extends Component {
   swapiService = new SwapiService();
-
   state = {
-    // selectedItem: null
+    selectedPlanet: null
   };
-  // onSelectedItem = id => {
-  //   this.setState({
-  //     selectedItem: id
-  //   });
-  // };
+  onPlanetSelected = selectedPlanet => {
+    this.setState({
+      selectedPlanet
+    });
+  };
   render() {
-    const planetList = (
-      <ItemList
-        getData={this.swapiService.getAllPlanet}
-        renderItem={item => `${item.name}`}
-      />
-    );
+    const { selectedPlanet } = this.state;
+    const planetList = <PlanetList onItemSelected={this.onPlanetSelected} />;
+    const planetDetails = <PlanetDetails itemId={selectedPlanet} />;
     return (
-      <div>
-        <Header />
-        {/* <RandomPlanet /> */}
-        <Row left={planetList} right={<PlanetDetails />} />
-        <Row left="{planetList}" right="{<PlanetDetails />}" />
-        {/* <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList
-              getData={this.swapiService.getAllPlanet}
-              renderItem={item => `${item.name}`}
-            />
-          </div>
-          <div className="col-md-6">
-            <PlanetDetails selectedItem={this.state.selectedItem} />
-          </div>
-        </div> */}
-      </div>
+      <SwapiServiceProvider value={this.swapiService}>
+        <div className="stardb-app">
+          <Header />
+          <RandomPlanets />
+
+          <Row left={planetList} right={planetDetails} />
+        </div>
+      </SwapiServiceProvider>
     );
   }
 }

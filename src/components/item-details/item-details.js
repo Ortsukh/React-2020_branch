@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import "./item-details.css";
 
-import "./random-planet.css";
-
-class RandomPlanet extends Component {
+class ItemDetails extends Component {
   RenderCard() {
     const { item, getImageUrl, children } = this.props;
-
+    if (!item) {
+      return <span>Select a item from a list</span>;
+    }
     return (
       <div className="planet-details card">
         <img className="planet-image" src={getImageUrl(item)} />
@@ -26,4 +27,4 @@ class RandomPlanet extends Component {
     return <div>{content}</div>;
   }
 }
-export default RandomPlanet;
+export default ItemDetails;
