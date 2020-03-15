@@ -19,7 +19,7 @@ export default class SwapiService {
     return `${this._baseImageUrl}/characters/${id}.jpg`;
   };
   getStarshipImage = ({ id }) => {
-    return `${this._baseImageUrl}/startships/${id}.jpg`;
+    return `${this._baseImageUrl}/starships/${id}.jpg`;
   };
   getAllPeople = async () => {
     const res = await this.getResource(`/people/`);

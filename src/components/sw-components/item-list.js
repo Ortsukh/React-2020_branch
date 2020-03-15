@@ -2,7 +2,7 @@ import ItemList from "../item-list";
 import { withData, withChildrenFunction } from "../../hocs";
 import SwapiService from "../../services/swapi-service";
 
-const { getAllPeople, getAllPlanet, getAllStarships } = new SwapiService();
+const { getAllPeople, getAllPlanet, getAllStarship } = new SwapiService();
 const renderName = item => `${item.name}`;
 const PersonList = withData(
   withChildrenFunction(ItemList, renderName),
@@ -12,9 +12,9 @@ const PlanetList = withData(
   withChildrenFunction(ItemList, renderName),
   getAllPlanet
 );
-const StarShipList = withData(
+const StarshipList = withData(
   withChildrenFunction(ItemList, renderName),
-  getAllStarships
+  getAllStarship
 );
 
-export { PersonList, PlanetList, StarShipList };
+export { PersonList, PlanetList, StarshipList };

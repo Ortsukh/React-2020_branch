@@ -1,7 +1,7 @@
-import { PersonList, PlanetList, StarShipList } from "./item-list";
+import { PersonList, PlanetList, StarshipList } from "./item-list";
 import { PersonDetails, PlanetDetails, StarshipDetails } from "./details";
 import { RandomPlanets } from "./random";
 
-export { PersonList, PlanetList, StarShipList };
+export { PersonList, PlanetList, StarshipList };
 export { PersonDetails, PlanetDetails, StarshipDetails };
 export { RandomPlanets };
